@@ -1,0 +1,172 @@
+{
+  "resource": "/users",
+  "path": "/users",
+  "httpMethod": "POST",
+  "headers": {
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Authorization": "Bearer eyJraWQiOiJMXC9LTllESXQ1ajdzVWs0N1NhSEptYkp6VTJWOVJ5d3BLeDhlclFnZ3FFRT0iLCJhbGciOiJSUzI1NiJ9.eyJhdF9oYXNoIjoiOVBFS0tfZ3preTlSa1pXYlJBTFFxdyIsInN1YiI6ImUxYmI4NTIwLTEwNjEtNzAzNC0xYTRhLTRmZmFmZDFkZGY2MiIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0yLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMl9NSUZhWE1ncGoiLCJwaG9uZV9udW1iZXJfdmVyaWZpZWQiOnRydWUsImNvZ25pdG86dXNlcm5hbWUiOiJkZXZpLnBpbm5hbWFuZW5pQGJsdW1ldHJhLmNvbSIsImdpdmVuX25hbWUiOiJEZXZpIiwiY3VzdG9tOnVzZXJUeXBlIjoiRGF0YV9FbmdpbmVlciIsImF1ZCI6IjFrNDN1MDd1cDNyNmJqNDNwa2ZldmJzbDY2IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2OTM4MjI3MzksInBob25lX251bWJlciI6Iis5MTgxOTc1NTU1NzMiLCJleHAiOjE2OTM4MjYzMzksImlhdCI6MTY5MzgyMjczOSwiZmFtaWx5X25hbWUiOiJQaW5uYW1hbmVuaSIsImp0aSI6ImUzMTgyZTdlLTk3OWQtNDQ1Mi05NGVkLWI1YjdhMjQ3MTYwMiIsImVtYWlsIjoiZGV2aS5waW5uYW1hbmVuaUBibHVtZXRyYS5jb20ifQ.xrKqadUfSF3MIIUSAkwnLfvyjhz7l-bJQoQUbyIQ7a0fHzVjPKDgufDfE_avuQA0rWEDlo3z7ktBU22On9kKyL1ovP6aJJfM4t-1L8VD5zJCw7jAsmESDIn5rq5h_00LZNpHxu8-19Ih3TKqpm8P8Rw25cJp0pFREFsAh4u1j9ofh2nOJR7V-dOm6htdzQhbCUmppNvLG5LYqegcbP2BtVrkMIyTNBDMplxi7zCteqAfF6w-z9g46EosVkhWJcqFIWg8aQ5Ykw34-OwjZX_CSfV4W_rJEEoq42-q47zgEpAgw-l0rlBGFV44cQbXjvjGTi03q96AJHznMeTjycSPBw",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-ASN": "18209",
+    "CloudFront-Viewer-Country": "IN",
+    "Host": "rd7bmnzqgk.execute-api.us-east-2.amazonaws.com",
+    "origin": "http://localhost:4200",
+    "Referer": "http://localhost:4200/",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "cross-site",
+    "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/116.0",
+    "Via": "2.0 8e70df0d313f36e538f23e0c04aa96f8.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "vn5AL3qHgub6yMlJpIlJJX8y3mOy9McdT0sncUXy8NufZ1j-tEptIg==",
+    "X-Amzn-Trace-Id": "Root=1-64f5af17-44b2dc01260f4ae61f096ed3",
+    "X-Forwarded-For": "183.82.7.167, 18.68.58.82",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+    "Accept": [
+      "application/json, text/plain, */*"
+    ],
+    "Accept-Encoding": [
+      "gzip, deflate, br"
+    ],
+    "Accept-Language": [
+      "en-US,en;q=0.5"
+    ],
+    "Authorization": [
+      "Bearer eyJraWQiOiJMXC9LTllESXQ1ajdzVWs0N1NhSEptYkp6VTJWOVJ5d3BLeDhlclFnZ3FFRT0iLCJhbGciOiJSUzI1NiJ9.eyJhdF9oYXNoIjoiOVBFS0tfZ3preTlSa1pXYlJBTFFxdyIsInN1YiI6ImUxYmI4NTIwLTEwNjEtNzAzNC0xYTRhLTRmZmFmZDFkZGY2MiIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0yLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMl9NSUZhWE1ncGoiLCJwaG9uZV9udW1iZXJfdmVyaWZpZWQiOnRydWUsImNvZ25pdG86dXNlcm5hbWUiOiJkZXZpLnBpbm5hbWFuZW5pQGJsdW1ldHJhLmNvbSIsImdpdmVuX25hbWUiOiJEZXZpIiwiY3VzdG9tOnVzZXJUeXBlIjoiRGF0YV9FbmdpbmVlciIsImF1ZCI6IjFrNDN1MDd1cDNyNmJqNDNwa2ZldmJzbDY2IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE2OTM4MjI3MzksInBob25lX251bWJlciI6Iis5MTgxOTc1NTU1NzMiLCJleHAiOjE2OTM4MjYzMzksImlhdCI6MTY5MzgyMjczOSwiZmFtaWx5X25hbWUiOiJQaW5uYW1hbmVuaSIsImp0aSI6ImUzMTgyZTdlLTk3OWQtNDQ1Mi05NGVkLWI1YjdhMjQ3MTYwMiIsImVtYWlsIjoiZGV2aS5waW5uYW1hbmVuaUBibHVtZXRyYS5jb20ifQ.xrKqadUfSF3MIIUSAkwnLfvyjhz7l-bJQoQUbyIQ7a0fHzVjPKDgufDfE_avuQA0rWEDlo3z7ktBU22On9kKyL1ovP6aJJfM4t-1L8VD5zJCw7jAsmESDIn5rq5h_00LZNpHxu8-19Ih3TKqpm8P8Rw25cJp0pFREFsAh4u1j9ofh2nOJR7V-dOm6htdzQhbCUmppNvLG5LYqegcbP2BtVrkMIyTNBDMplxi7zCteqAfF6w-z9g46EosVkhWJcqFIWg8aQ5Ykw34-OwjZX_CSfV4W_rJEEoq42-q47zgEpAgw-l0rlBGFV44cQbXjvjGTi03q96AJHznMeTjycSPBw"
+    ],
+    "CloudFront-Forwarded-Proto": [
+      "https"
+    ],
+    "CloudFront-Is-Desktop-Viewer": [
+      "true"
+    ],
+    "CloudFront-Is-Mobile-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-SmartTV-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-Tablet-Viewer": [
+      "false"
+    ],
+    "CloudFront-Viewer-ASN": [
+      "18209"
+    ],
+    "CloudFront-Viewer-Country": [
+      "IN"
+    ],
+    "Host": [
+      "rd7bmnzqgk.execute-api.us-east-2.amazonaws.com"
+    ],
+    "origin": [
+      "http://localhost:4200"
+    ],
+    "Referer": [
+      "http://localhost:4200/"
+    ],
+    "sec-fetch-dest": [
+      "empty"
+    ],
+    "sec-fetch-mode": [
+      "cors"
+    ],
+    "sec-fetch-site": [
+      "cross-site"
+    ],
+    "User-Agent": [
+      "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/116.0"
+    ],
+    "Via": [
+      "2.0 8e70df0d313f36e538f23e0c04aa96f8.cloudfront.net (CloudFront)"
+    ],
+    "X-Amz-Cf-Id": [
+      "vn5AL3qHgub6yMlJpIlJJX8y3mOy9McdT0sncUXy8NufZ1j-tEptIg=="
+    ],
+    "X-Amzn-Trace-Id": [
+      "Root=1-64f5af17-44b2dc01260f4ae61f096ed3"
+    ],
+    "X-Forwarded-For": [
+      "183.82.7.167, 18.68.58.82"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ]
+  },
+  "queryStringParameters": {  "recordsperpage": "10",
+  "offset": "0"},
+  "multiValueQueryStringParameters": "None",
+  "pathParameters": "None",
+  "stageVariables": "None",
+  "requestContext": {
+    "resourceId": "311waw",
+    "authorizer": {
+      "claims": {
+        "at_hash": "9PEKK_gzky9RkZWbRALQqw",
+        "sub": "e1bb8520-1061-7034-1a4a-4ffafd1ddf62",
+        "email_verified": "true",
+        "iss": "https://cognito-idp.us-east-2.amazonaws.com/us-east-2_MIFaXMgpj",
+        "phone_number_verified": "true",
+        "cognito:username": "devi.pinnamaneni@blumetra.com",
+        "given_name": "Devi",
+        "custom:userType": "Data_Engineer",
+        "aud": "1k43u07up3r6bj43pkfevbsl66",
+        "token_use": "id",
+        "auth_time": "1693822739",
+        "phone_number": "+918197555573",
+        "exp": "Mon Sep 04 11:18:59 UTC 2023",
+        "iat": "Mon Sep 04 10:18:59 UTC 2023",
+        "family_name": "Pinnamaneni",
+        "jti": "e3182e7e-979d-4452-94ed-b5b7a2471602",
+        "email": "devi.pinnamaneni@blumetra.com"
+      }
+    },
+    "resourcePath": "/groups",
+    "httpMethod": "POST",
+    "extendedRequestId": "KuhLwGfNiYcF-Pg=",
+    "requestTime": "04/Sep/2023:10:19:03 +0000",
+    "path": "/qa/job",
+    "accountId": "478313837588",
+    "protocol": "HTTP/1.1",
+    "stage": "qa",
+    "domainPrefix": "rd7bmnzqgk",
+    "requestTimeEpoch": 1693822743770,
+    "requestId": "0bb814b7-2d96-4e60-8232-0e9cad07294c",
+    "identity": {
+      "cognitoIdentityPoolId": "None",
+      "accountId": "None",
+      "cognitoIdentityId": "None",
+      "caller": "None",
+      "sourceIp": "183.82.7.167",
+      "principalOrgId": "None",
+      "accessKey": "None",
+      "cognitoAuthenticationType": "None",
+      "cognitoAuthenticationProvider": "None",
+      "userArn": "None",
+      "userAgent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/116.0",
+      "user": "None"
+    },
+    "domainName": "rd7bmnzqgk.execute-api.us-east-2.amazonaws.com",
+    "apiId": "rd7bmnzqgk"
+  },
+  "body": {
+    "role_id": 0,
+    "role_status": "active",
+    "groups_list": {
+                    "27ed1f37-bacb-4093-9467-66e6e2e13196": "Demand-to-supply"
+    },
+    "user_id": "0c1a7e23-0fbc-492c-b27e-5399e77ead1d",
+    "email": "prudveeraj.gikki@blumetra.com",
+    "created_from": "cognito"
+  },
+  "isBase64Encoded": "False"
+}

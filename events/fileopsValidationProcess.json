@@ -1,0 +1,179 @@
+{
+  "resource": "/file-validate",
+  "path": "/file-validate",
+  "httpMethod": "GET",
+  "headers": {
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8",
+    "Authorization": "",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-ASN": "18229",
+    "CloudFront-Viewer-Country": "IN",
+    "Host": "rd7bmnzqgk.execute-api.us-east-2.amazonaws.com",
+    "origin": "http://localhost:4200",
+    "Referer": "http://localhost:4200/",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "Windows",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "cross-site",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+    "Via": "2.0 810cc8dc3f6b2d24dc37472bc658a57e.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "E5K23s3xWC2tQdv5vDfkSVW5oK2qXn5DQDYk3vs_jjS73yfmaanirw==",
+    "X-Amzn-Trace-Id": "Root=1-64f84153-5538eb440411376463603926",
+    "X-Forwarded-For": "103.239.38.13, 18.68.58.72",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+    "Accept": [
+      "application/json, text/plain, */*"
+    ],
+    "Accept-Encoding": [
+      "gzip, deflate, br"
+    ],
+    "Accept-Language": [
+      "en-GB,en-US;q=0.9,en;q=0.8"
+    ],
+    "Authorization": [
+      ""
+    ],
+    "CloudFront-Forwarded-Proto": [
+      "https"
+    ],
+    "CloudFront-Is-Desktop-Viewer": [
+      "true"
+    ],
+    "CloudFront-Is-Mobile-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-SmartTV-Viewer": [
+      "false"
+    ],
+    "CloudFront-Is-Tablet-Viewer": [
+      "false"
+    ],
+    "CloudFront-Viewer-ASN": [
+      "18229"
+    ],
+    "CloudFront-Viewer-Country": [
+      "IN"
+    ],
+    "Host": [
+      "rd7bmnzqgk.execute-api.us-east-2.amazonaws.com"
+    ],
+    "origin": [
+      "http://localhost:4200"
+    ],
+    "Referer": [
+      "http://localhost:4200/"
+    ],
+    "sec-ch-ua-mobile": [
+      "?0"
+    ],
+    "sec-ch-ua-platform": [
+      "Windows"
+    ],
+    "sec-fetch-dest": [
+      "empty"
+    ],
+    "sec-fetch-mode": [
+      "cors"
+    ],
+    "sec-fetch-site": [
+      "cross-site"
+    ],
+    "User-Agent": [
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+    ],
+    "Via": [
+      "2.0 810cc8dc3f6b2d24dc37472bc658a57e.cloudfront.net (CloudFront)"
+    ],
+    "X-Amz-Cf-Id": [
+      "E5K23s3xWC2tQdv5vDfkSVW5oK2qXn5DQDYk3vs_jjS73yfmaanirw=="
+    ],
+    "X-Amzn-Trace-Id": [
+      "Root=1-64f84153-5538eb440411376463603926"
+    ],
+    "X-Forwarded-For": [
+      "103.239.38.13, 18.68.58.72"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ]
+  },
+  "queryStringParameters": {
+    "business_validate_id": "a5cacfe3-e6bb-4f98-9aee-8c7d2f469fd1",
+    "job_type": "Manual",
+    "location_pattern": "s3://fileops-storage-dev/patterns/${%d-%m-%Y}",
+    "file_name_pattern": "ds_salaries_test"
+  },
+  "multiValueQueryStringParameters": {
+    "business_validate_id": [
+      "a5cacfe3-e6bb-4f98-9aee-8c7d2f469fd1"
+    ]
+  },
+  "pathParameters": "None",
+  "stageVariables": "None",
+  "requestContext": {
+    "resourceId": "7z0taz",
+    "authorizer": {
+      "claims": {
+        "sub": "116b1550-f0d1-7061-3825-fedebfd732ab",
+        "email_verified": "true",
+        "iss": "https://cognito-idp.us-east-2.amazonaws.com/us-east-2_MIFaXMgpj",
+        "cognito:username": "Sejalsingh.Mallevale@blumetra.com",
+        "given_name": "Sejal Singh",
+        "origin_jti": "eb90d731-e297-4092-bb16-501171274eae",
+        "custom:userType": "Data_Engineer",
+        "aud": "1k43u07up3r6bj43pkfevbsl66",
+        "event_id": "6cff3d05-9019-4347-90bf-b7514fb7f212",
+        "token_use": "id",
+        "auth_time": "1693983240",
+        "name": "Sejalsingh.Mallevale",
+        "exp": "Wed Sep 06 09:57:40 UTC 2023",
+        "iat": "Wed Sep 06 08:57:40 UTC 2023",
+        "family_name": "Mallevale",
+        "jti": "becc8d47-ec1a-4b79-99c6-5286d02ae10a",
+        "email": "Sejalsingh.Mallevale@blumetra.com"
+      }
+    },
+    "resourcePath": "/file-validate",
+    "httpMethod": "GET",
+    "extendedRequestId": "K08lIE6DiYcF2SA=",
+    "requestTime": "06/Sep/2023:09:07:31 +0000",
+    "path": "/dev/file-validate",
+    "accountId": "478313837588",
+    "protocol": "HTTP/1.1",
+    "stage": "dev",
+    "domainPrefix": "rd7bmnzqgk",
+    "requestTimeEpoch": 1693991251768,
+    "requestId": "29ef1bb8-3795-493c-bbff-9907653a48cd",
+    "identity": {
+      "cognitoIdentityPoolId": "None",
+      "accountId": "None",
+      "cognitoIdentityId": "None",
+      "caller": "None",
+      "sourceIp": "103.239.38.13",
+      "principalOrgId": "None",
+      "accessKey": "None",
+      "cognitoAuthenticationType": "None",
+      "cognitoAuthenticationProvider": "None",
+      "userArn": "None",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+      "user": "None"
+    },
+    "domainName": "rd7bmnzqgk.execute-api.us-east-2.amazonaws.com",
+    "apiId": "rd7bmnzqgk"
+  },
+  "body": "None",
+  "isBase64Encoded": "False"
+}

@@ -1,0 +1,24 @@
+{
+    "Records": [
+      {
+        "EventSource": "aws:sns",
+        "EventVersion": "1.0",
+        "EventSubscriptionArn": "arn:aws:sns:us-east-2:478313837588:FileOps-Airflow-batch:e22d80e3-a31f-43b2-a13b-b4b78f285932",
+        "Sns": {
+          "Type": "Notification",
+          "MessageId": "4fc29593-000b-56a3-91ef-c85e5b16762f",
+          "TopicArn": "arn:aws:sns:us-east-2:478313837588:FileOps-Airflow-batch",
+          "Subject": "None",
+          "Message": "{\"message\": \"Sending payload to SNS from final Save Job \", \"data\": {\"record_type\": \"JOB_ONBOARD_EMAIL_NOTIFICATION\", \"job_id\": \"76606ccd-a1af-42db-9117-6cb87412bfe0\", \"job_name\": \"jobname_2\", \"job_type\": \"inhouse_scheduled\", \"file_name\": \"ds_salaries.csv\", \"file_size\": \"205.15 KB\", \"column_validation\": null, \"standard_validations\": {\"encoding\": \"UTF-8\", \"delimiter\": \"Comma\", \"duplicate_record_check\": true}, \"file_config_details\": {\"file_type\": \"CSV\", \"file_size_max\": \"10KB\", \"file_size_min\": \"2KB\", \"file_name_pattern\": \"ds_salaries\"}, \"email_notification_enablement\": true, \"jira_notification_enablement\": null, \"business_process_name\": \"Demo_business_process1\", \"email_recipient_list\": [\"krishnaveni.gullipalli@blumetra.com\"], \"jira_recipient_list\": null, \"source_name\": \"S3_SOURCE_DEMO\", \"source_absolute_file_path\": \"s3://fileops-storage-prod/patterns/{%d-%m-%Y}\", \"target_name\": \"TARGET_S3_DEMO\", \"target_absolute_file_path\": \"s3://fileops-storage-prod/patterns/${%d-%m-%Y}\", \"job_status\": \"Completed\", \"file_errors\": {\"count\": 0, \"file_type_check\": {\"value\": \"\", \"status\": \"PASS\"}, \"file_size_check\": {\"value\": \"\", \"status\": \"PASS\"}}, \"column_header_errors\": {\"count\": 0, \"additional_columns\": 0, \"missing_columns\": 0}, \"data_errors\": {\"count\": 0, \"delimeter_errors\": 0, \"encoding_check\": \"PASS\", \"rang_check_error\": \"PASS\", \"null_values\": 0, \"blanks\": 0, \"list_of_value_errors\": 0}}}",
+          "Timestamp": "2023-11-14T11:24:13.276Z",
+          "SignatureVersion": "1",
+          "Signature": "OlHegHmmM7uZO995YpcA/VQz2/1/i031nJ4FVpim6JnagGh9tjgTcgeF7GivvoXfdz84LvVa6rYskILH4OFjV+Tcr2M6TJ346KK4+GBgoYqL7YC23w8qpq4+f6qvopaWv7JLslj8tWn2rlZNPhE07a8U2aELdZ6VopL3+ZD6HxBzfZW6l3pEE1E7A8Ff+6MT1woPcajbikz4P+j7Hh97kXonOUK9iXUZM9FFHUqM1XGARo8Fa1i7xuRrJRsyY+vxgTwRemR6MNkXYHYIKufuXisCPNbWQ1A0CLucyuwNX8GWeYid2BTdnr4AivhGL0nCoiUWN5QPREI1koFB00R6yQ==",
+          "SigningCertUrl": "https://sns.us-east-2.amazonaws.com/SimpleNotificationService-01d088a6f77103d0fe307c0069e40ed6.pem",
+          "UnsubscribeUrl": "https://sns.us-east-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-2:478313837588:FileOps-Airflow-batch:e22d80e3-a31f-43b2-a13b-b4b78f285932",
+          "MessageAttributes": {
+            
+          }
+        }
+      }
+    ]
+  }

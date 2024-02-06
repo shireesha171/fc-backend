@@ -1,0 +1,771 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS cloud-formation template for FileOps project
+
+Globals:
+  Function:
+    Timeout: 28
+    MemorySize: 128
+    Tracing: Active
+  Api:
+    TracingEnabled: true
+
+Parameters:
+  Environment:
+    Type: String
+    AllowedValues:
+      - dev
+      - qa
+      - prod
+  Role:
+    Type: String
+    Description: "Lambda execute role for the  Fileops_Lambda_Execute"
+    Default: "arn:aws:iam::478313837588:role/Fileops_Lambda_Execute"
+  Role1:
+    Type: String
+    Description: "Event bridge role execute role for the FileOps_Lambda_EventBridge_Role"
+    Default: "arn:aws:iam::478313837588:role/FileOps_Lambda_EventBridge_Role"
+
+  ManagedLayer:
+    Type: String
+    Description: "Aws managed layer for the Pandas lib"
+    Default: "arn:aws:lambda:us-east-2:336392948345:layer:AWSSDKPandas-Python310:5"
+  EmailSenderId:
+    Type: String
+    Default: "keerthivasan.ramanathan@blumetra.com"
+  EmailSenderCCId:
+    Type: String
+    Default: "devi.pinnamaneni@blumetra.com"
+  S3FileStorage:
+    Type: String
+    Default: "fileops-storage"
+
+Resources:
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub fileops-userpool-${Environment}
+
+#  S3bucket:
+#    Type: AWS::S3::Bucket
+#    Properties:
+#      BucketName: !Sub fileops-storage-${Environment}
+
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub fileops-api-${Environment}
+      Description: Api endpoints for the Fileops project
+      StageName: !Sub ${Environment}
+      Cors:
+        AllowMethods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+      Auth:
+        DefaultAuthorizer: CognitoAuthorizer
+        AddDefaultAuthorizerToCorsPreflight: false
+
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt CognitoUserPool.Arn
+            ProviderARNs: !Ref CognitoUserPool.Arn
+            Identity:
+              Header: Authorization
+
+
+  fileopsBusinessProcess:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-BusinessProcess/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-BusinessProcess-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /business-process
+            Method: ANY
+
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsAnalyzeSchema:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-AnalyzeSchema/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-AnalyzeSchema-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job/analyze-schema
+            Method: ANY
+
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsAuthentication:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-Authentication/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-Authentication-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /auth
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+#  fileopsBusinessProcessSourceConfig:
+#    Type: AWS::Serverless::Function
+#    Properties:
+#      CodeUri: functions/fileops-BusinessProcessSourceConfig/
+#      Handler: app.lambda_handler
+#      Runtime: python3.10
+#      FunctionName: !Sub fileops-BusinessProcessSourceConfig-${Environment}
+#      Role: !Ref Role
+#      Events:
+#        ProxyApiRoot:
+#          Type: Api
+#          Properties:
+#            RestApiId: !Ref ApiGatewayApi
+#            Path: /job/final-save
+#            Method: ANY
+#      Layers:
+#        - !Ref fileopsEssentialLayer
+#        - arn:aws:lambda:us-east-2:336392948345:layer:AWSSDKPandas-Python310:4
+#      Environment:
+#        Variables:
+#          Environment: !Ref Environment
+
+  fileopsBusinessUserProcess:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-BusinessUserProcess/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-BusinessUserProcess-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /validation-process
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+        - !Ref ManagedLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          S3FileStorage: !Ref S3FileStorage
+
+  fileopsDataProfiling:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-DataProfiling/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-DataProfiling-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /data-profiling
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          S3FileStorage: !Ref S3FileStorage
+
+  fileopsDqRules:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-DqRules/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-DqRules-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job/dq-rules
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsEmailNotification:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-EmailNotification/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-EmailNotification-${Environment}
+      Role: !Ref Role
+      Layers:
+        - !Ref fileopsEssentialLayer
+        - !Ref fileopsJinja2Layer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          Sender_id: !Ref EmailSenderId
+          Sender_cc_id: !Ref EmailSenderCCId
+          Region: !Sub ${AWS::Region}
+
+  fileopsErrorCodes:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-ErrorCodes/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-ErrorCodes-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /error-codes
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsGroups:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-Groups/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-Groups-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /groups
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsUsers:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-Users/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-Users-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /users
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsFileUpload:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-FileUpload/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-FileUpload-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job
+            Method: ANY
+        ProxyApiRoot2:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job/file_upload
+            Method: ANY
+        ProxyApiRoot3:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /jira/upload
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          S3FileStorage: !Ref S3FileStorage
+
+  fileopsFinalSaveJob:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-FinalSaveJob/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-FinalSaveJob-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job/final-save
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+        - !Ref ManagedLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          Scheduler_Sns_Topic: !Ref FileopsSchedulerSnsTopic
+          Email_Notification_Sns_Topic: !Ref FileopsEmailNotificationSnsTopic
+          S3FileStorage: !Ref S3FileStorage
+
+  fileopsJobRunDetails:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-JobRunDetails/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-JobRunDetails-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job-runs/job-run-details
+            Method: ANY
+        ProxyApiRoot2:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job-runs
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+        - !Ref ManagedLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          S3FileStorage: !Ref S3FileStorage
+
+  fileopsJobsSchedule:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-JobsSchedule/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-JobsSchedule-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job/schedule
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsLogs:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-Logs/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-Logs-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job-runs/logs
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsPostSignup:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-PostSignup/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-PostSignup-${Environment}
+      Role: !Ref Role
+      Events:
+        CognitoEvent:
+          Type: Cognito
+          Properties:
+            UserPool: !Ref CognitoUserPool
+            Trigger:
+              - PreSignUp
+              - PostAuthentication
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsJobColumns:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-JobColumns/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-JobColumns-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job/columns
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+        - !Ref ManagedLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          S3FileStorage: !Ref S3FileStorage
+
+  fileopsSampleFileProcess:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-SampleFileProcess/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-SampleFileProcess-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job/sample-file-process
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+        - !Ref ManagedLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          S3FileStorage: !Ref S3FileStorage
+
+  fileopsSourceFileConfig:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-SourceFileConfig/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-SourceFileConfig-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job/configuration
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          S3FileStorage: !Ref S3FileStorage
+
+  fileopsSourceTargetConfig:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-SourceTargetConfig/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-SourceTargetConfig-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /source-target-config
+            Method: ANY
+        ProxyApiRoot2:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /source-target-config/list
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+        - !Ref ManagedLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsTargetFileConfig:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-TargetFileConfig/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-TargetFileConfig-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: jobs/target-file-config
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          S3FileStorage: !Ref S3FileStorage
+
+  fileopsTargetTransformation:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-TargetTransformation/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-TargetTransformation-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /job/transformation
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+        - !Ref ManagedLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          S3FileStorage: !Ref S3FileStorage
+
+  fileopsGetList:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-GetList/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-GetList-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /list-items
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+
+  fileopsValidationProcess:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-ValidationProcess/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-ValidationProcess-${Environment}
+      Role: !Ref Role
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /file-validate
+            Method: ANY
+      Layers:
+        - !Ref fileopsEssentialLayer
+        - !Ref ManagedLayer
+
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          S3FileStorage: !Ref S3FileStorage
+          Account: !Sub ${AWS::AccountId}
+          Region: !Sub ${AWS::Region}
+#         SnsTopic: arn:aws:sns:us-east-2:478313837588:FileOps-Airflow-batch
+
+  FileopsGenerateDataProfile:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: functions/fileops-GenerateDataProfile/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      Role: !Ref Role
+      FunctionName: !Sub fileops-GenerateDataProfile-${Environment}
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          Account: !Sub ${AWS::AccountId}
+          cluster_name: filecentral-cluster-dev
+          container_name: Task-data-profile
+  FileopsJobScheduler:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-JobScheduler/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub fileops-JobScheduler-${Environment}
+      Role: !Ref Role1
+      Layers:
+        - !Ref fileopsEssentialLayer
+      Environment:
+        Variables:
+          Environment: !Ref Environment
+          Account: !Sub ${AWS::AccountId}
+          Region: !Sub ${AWS::Region}
+
+
+  fileopsSnsTroubleshooting:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/fileops-SnsTroubleshooting/
+      Handler: app.lambda_handler
+      Runtime: python3.10
+      FunctionName: !Sub sns-troubleshooting-lambda-${Environment}
+      Role: !Ref Role
+
+  FileopsSchedulerSnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: FileOps Job Schedule Topic
+      TopicName: !Sub FileOps-job-schedule-topic-new-${Environment}
+      Tags:
+      - Key: Project
+        Value: FileOps
+      - Key: Owner
+        Value: FileOpsUser
+      - Key: Env
+        Value: dev
+
+  FileopsEmailNotificationSnsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: FileOps Email Notification Topic
+      TopicName: !Sub FileOps-email-notification-topic-${Environment}
+      Tags:
+        - Key: Project
+          Value: FileOps
+        - Key: Owner
+          Value: FileOpsUser
+        - Key: Env
+          Value: dev
+        
+  FileopsSchedulerSnsSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: lambda
+      TopicArn: !Ref FileopsSchedulerSnsTopic
+      Endpoint: !GetAtt FileopsJobScheduler.Arn
+
+  FileopsEmailNotificationSnsSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: lambda
+      TopicArn: !Ref FileopsEmailNotificationSnsTopic
+      Endpoint: !GetAtt fileopsEmailNotification.Arn
+
+  FileopsSchedulerLambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt FileopsJobScheduler.Arn
+      Principal: sns.amazonaws.com
+      SourceArn: !Ref FileopsSchedulerSnsTopic
+
+  FileopsEmailNotificationLambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt fileopsEmailNotification.Arn
+      Principal: sns.amazonaws.com
+      SourceArn: !Ref FileopsEmailNotificationSnsTopic
+
+  fileopsEssentialLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: layers/fileops-essentials-layer/
+      LayerName: !Sub fileops-essentials-${Environment}
+      CompatibleRuntimes:
+        - python3.10  
+    Metadata:
+      BuildMethod: python3.10  
+      Variables:
+         Region: !Sub ${AWS::Region} # Required to have AWS SAM build this layer
+
+  fileopsJinja2Layer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: layers/fileops-jinja2-layer/
+      LayerName: !Sub fileops-jinja2-${Environment}
+      CompatibleRuntimes:
+        - python3.10
+    Metadata:
+      BuildMethod: python3.10   # Required to have AWS SAM build this layer
+
+Outputs:
+  Apigatewayoutput:
+    Value: !GetAtt ApiGatewayApi.RootResourceId
