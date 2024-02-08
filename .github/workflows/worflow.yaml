@@ -5,6 +5,10 @@ on:
     branches:
       - main  # Replace with your branch name
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +20,7 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        role-to-assume: arn:aws:iam::478313837588:role/github-actions
+        role-to-assume: arn:aws:iam::478313837588:role/github-actions-role
         aws-region: us-east-2
 
     - name: Install AWS CLI and SAM CLI
