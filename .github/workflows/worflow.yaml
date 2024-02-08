@@ -1,1 +1,28 @@
-hi
+name: SAM Validate
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    
+    - name: Install AWS CLI and SAM CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y awscli
+        curl -Lo /tmp/sam-installation-script https://raw.githubusercontent.com/aws/aws-sam-cli/develop/installation.sh
+        chmod +x /tmp/sam-installation-script
+        /tmp/sam-installation-script --update
+        sam --version
+
+    - name: Validate SAM template
+      run: |
+        sam validate --template template.yaml
+
