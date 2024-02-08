@@ -44,6 +44,15 @@ jobs:
       run: |
         sam validate --template template.yaml
     
+    - name: Install Python dependencies
+      run: |
+        cd layers/fileops-essentials-layer/python
+        pip install -r requirements.txt -t .
+        - name: Install Python dependencies
+      run: |
+        cd layers/fileops-jinja2-layer/python
+        pip install -r requirements.txt -t . 
+ 
     - name: Deploy SAM template
       run: |
         sam deploy --template-file template.yaml --stack-name fileops-stack-devvv --no-confirm-changeset --parameter-overrides Environment=devvv
