@@ -44,11 +44,11 @@ jobs:
       run: |
         sam validate --template template.yaml
     
-    - name: Install Python dependencies
+    - name: Install Python dependencies essential layer
       run: |
         cd layers/fileops-essentials-layer/python
         pip install -r requirements.txt -t .
-        - name: Install Python dependencies
+    - name: Install Python dependencies for jinja2 layer
       run: |
         cd layers/fileops-jinja2-layer/python
         pip install -r requirements.txt -t . 
