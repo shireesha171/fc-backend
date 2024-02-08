@@ -3,7 +3,7 @@ name: SAM Validate
 on:
   push:
     branches:
-      - main  
+      - main  # Replace with your branch name
 
 jobs:
   build:
@@ -17,12 +17,12 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y awscli
-        curl -Lo /tmp/sam-installation-script https://raw.githubusercontent.com/aws/aws-sam-cli/develop/installation.sh
-        chmod +x /tmp/sam-installation-script
-        /tmp/sam-installation-script --update
+        sudo apt-get install -y unzip
+        curl -Lo sam.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+        unzip sam.zip -d sam-installation
+        sudo ./sam-installation/install
         sam --version
 
     - name: Validate SAM template
       run: |
         sam validate --template template.yaml
-
