@@ -3,7 +3,7 @@ name: FC-Backend-deployment
 on:
   push:
     branches:
-      - main  # Replace with your branch name
+      - dev  # Replace with your branch name
 
 permissions:
   contents: read
@@ -55,4 +55,4 @@ jobs:
  
     - name: Deploy SAM template
       run: |
-        sam deploy --template-file template.yaml --stack-name fileops-stack-devvv --no-confirm-changeset --parameter-overrides Environment=devvv
+        sam deploy --template-file template.yaml --stack-name fileops-stack-qaa --no-confirm-changeset --parameter-overrides Environment=qaa
