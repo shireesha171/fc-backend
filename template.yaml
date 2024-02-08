@@ -20,7 +20,6 @@ Parameters:
   #Role:
   #  Type: String
   #  Description: "Lambda execute role for the  Fileops_Lambda_Execute"
-  #  Default: "arn:aws:iam::478313837588:role/Fileops_Lambda_Execute"
   #Role1:
   #  Type: String
   #  Description: "Event bridge role execute role for the FileOps_Lambda_EventBridge_Role"
