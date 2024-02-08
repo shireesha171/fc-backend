@@ -5,9 +5,9 @@ on:
     branches:
       - main  # Replace with your branch name
 
-#permissions:
-#  contents: read
-#  id-token: write
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   build:
