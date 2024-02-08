@@ -12,7 +12,13 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::478313837588:role/github-actions
+        aws-region: us-east-2
+
     - name: Install AWS CLI and SAM CLI
       run: |
         sudo apt-get update
@@ -33,3 +39,7 @@ jobs:
     - name: Validate SAM template
       run: |
         sam validate --template template.yaml
+    
+    - name: Deploy SAM template
+      run: |
+        sam deploy --template-file template.yaml --stack-name fileops-stack-devvv --no-confirm-changeset --parameter-overrides Environment=devvv
