@@ -16,7 +16,7 @@ ecs = boto3.client('ecs', region_name='us-east-1')
 cluster_name = os.environ.get('cluster_name')
 account = os.environ.get('Account')
 
-task_definition_arn = f'arn:aws:ecs:us-east-1:{account}:task-definition/FileOps-data-profilling:5'
+task_definition_arn = f'arn:aws:ecs:us-east-1:{account}:task-definition/FileOps-data-profilling:2'
 
 # Define the container name if you want to override environment variables
 container_name = os.environ.get('container_name') or 'Task-data-profile'
