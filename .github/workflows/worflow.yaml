@@ -14,10 +14,21 @@ jobs:
       uses: actions/checkout@v2
     
     - name: Install AWS CLI and SAM CLI
-      run: sudo apt-get install -y awscli
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y awscli
 
-    - name: Update AWS SAM CLI
-      run: sudo /usr/local/bin/sam update --yes
+    - name: Download SAM CLI
+      run: |
+        curl -Lo /tmp/sam.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+        sudo unzip /tmp/sam.zip -d /usr/local/bin/
+
+    - name: Install SAM CLI
+      run: |
+        sudo ln -s /usr/local/bin/aws-sam-cli-*/usr/local/bin/sam
+
+    - name: Verify SAM CLI Installation
+      run: sam --version
 
     - name: Validate SAM template
       run: |
